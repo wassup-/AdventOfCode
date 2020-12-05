@@ -4,7 +4,7 @@ public struct Input {
     public let contents: String
 
     public init(day: Int) throws {
-        contents = try String(contentsOfFile: "./Inputs/\(day).txt")
+        contents = try String(contentsOfFile: "./Inputs/Day \(day).txt")
     }
 }
 

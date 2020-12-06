@@ -11,11 +11,13 @@ let package = Package(
         .executable(name: "Day 3", targets: ["Day 3"]),
         .executable(name: "Day 4", targets: ["Day 4"]),
         .executable(name: "Day 5", targets: ["Day 5"]),
+        .executable(name: "Day 6", targets: ["Day 6"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(path: "../Core"),
         .package(url: "https://github.com/nicklockwood/SwiftFormat.git", from: "0.35.8"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "0.0.1"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -39,6 +41,13 @@ let package = Package(
         .target(
             name: "Day 5",
             dependencies: ["Core"]
+        ),
+        .target(
+            name: "Day 6",
+            dependencies: [
+                "Core",
+                .product(name: "Algorithms", package: "swift-algorithms")
+            ]
         ),
     ]
 )

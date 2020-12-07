@@ -12,6 +12,7 @@ let package = Package(
         .executable(name: "Day 4", targets: ["Day 4"]),
         .executable(name: "Day 5", targets: ["Day 5"]),
         .executable(name: "Day 6", targets: ["Day 6"]),
+        .executable(name: "Day 7", targets: ["Day 7"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -46,7 +47,14 @@ let package = Package(
             name: "Day 6",
             dependencies: [
                 "Core",
-                .product(name: "Algorithms", package: "swift-algorithms")
+                .product(name: "Algorithms", package: "swift-algorithms"),
+            ]
+        ),
+        .target(
+            name: "Day 7",
+            dependencies: [
+                "Core",
+                .product(name: "Algorithms", package: "swift-algorithms"),
             ]
         ),
     ]

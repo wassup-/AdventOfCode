@@ -27,13 +27,13 @@ struct Program {
         instructions = input.lines.compactMap(Instruction.init)
     }
 
-    @discardableResult
-    func execute(acc: inout Int) -> Bool {
+    func execute() -> (finished: Bool, acc: Int) {
         var index = instructions.startIndex
         var executed: Set<Array<Instruction>.Index> = []
 
+        var acc = 0
         while index != instructions.endIndex {
-            guard executed.insert(index).inserted else { return false }
+            guard executed.insert(index).inserted else { return (false, acc) }
 
             let instruction = instructions[index]
             switch instruction.operation {
@@ -47,7 +47,7 @@ struct Program {
             }
         }
 
-        return true
+        return (true, acc)
     }
 }
 
@@ -56,37 +56,24 @@ let input = try! Input(day: 8)
 // Part 1
 
 let program = Program(input: input)
-var acc = 0
-program.execute(acc: &acc)
+let (_, acc) = program.execute()
 print("part 1: \(acc)")
 
 // Part 2
 
-let jumps = program.instructions.enumerated()
-    .filter { $1.operation == .jmp }
-    .map { idx, _ in idx }
-
-for index in jumps {
+for index in program.instructions.indices {
     var copy = program
-    copy.instructions[index].operation = .nop
-
-    var acc = 0
-    if copy.execute(acc: &acc) {
-        print("part 2: \(acc)")
-        break
+    switch copy.instructions[index].operation {
+    case .nop:
+        copy.instructions[index].operation = .jmp
+    case .jmp:
+        copy.instructions[index].operation = .nop
+    default:
+        continue
     }
-}
 
-let nops = program.instructions.enumerated()
-    .filter { $1.operation == .nop }
-    .map { idx, _ in idx }
-
-for index in nops {
-    var copy = program
-    copy.instructions[index].operation = .jmp
-
-    var acc = 0
-    if copy.execute(acc: &acc) {
+    let (finished, acc) = copy.execute()
+    if finished {
         print("part 2: \(acc)")
         break
     }
